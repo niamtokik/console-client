@@ -1399,7 +1399,13 @@ static psync_socket_t connect_socket_direct(const char *host, const char *port){
 #elif defined(P_OS_WINDOWS)
     setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&sock_opt, sizeof(sock_opt));
     setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE, (char *)&sock_opt, sizeof(sock_opt));
-#elif defined(P_OS_MACOSX) || defined(P_OS_BSD)
+#elif defined(__OPENBSD__)
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char  *)&sock_opt, sizeof(sock_opt));
+    setsockopt(sock, IPPROTO_TCP, SO_KEEPALIVE, (char*)&sock_opt, sizeof(sock_opt));
+#elif defined(P_OS_FREEBSD) 
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char  *)&sock_opt, sizeof(sock_opt));
+    setsockopt(sock, IPPROTO_TCP, TCP_KEEPALIVE, (char*)&sock_opt, sizeof(sock_opt));
+#elif defined(P_OS_MACOSX)
     setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char  *)&sock_opt, sizeof(sock_opt));
     setsockopt(sock, IPPROTO_TCP, TCP_KEEPALIVE, (char*)&sock_opt, sizeof(sock_opt));
 #endif
